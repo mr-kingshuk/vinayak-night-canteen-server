@@ -5,14 +5,17 @@ dotenv.config();
 import morgan from 'morgan';
 
 //routers imports
-
+import { router as UserRoutes } from './routes/users';
 
 //enviroment variables and app
 const app = express();
 const PORT = process.env.PORT;
 
-//routes
+//middlewares
 app.use(morgan('tiny'));
+
+//routes
+app.use('/api/users', UserRoutes);
 
 app.get('/', (req, res) => {
     res.json({'msg': "hello world!!"});
