@@ -5,14 +5,17 @@ const OrdersItemSchema = new mongoose.Schema({
         type:  mongoose.SchemaTypes.ObjectId,
         required: true,
     },
-    foodItemId : {
+    itemId : {
         type:  mongoose.SchemaTypes.ObjectId,
         required: true
     },
     quantity : {
         type : Number,
         required : true
+    },
+    original_order_item_id : {
+        type:  mongoose.SchemaTypes.ObjectId
     }
 });
 
-export const OrdersItemModel = mongoose.model('OrdersItem', OrdersItemSchema);
+export const ordersItemModel = mongoose.model('OrdersItem', OrdersItemSchema);

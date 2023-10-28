@@ -5,10 +5,10 @@ const userTypeSchema = new mongoose.Schema({
         type:  mongoose.SchemaTypes.ObjectId,
         required: true,
     },
-    userType : {
+    type : {
         type: String,
         required: true
     }
 });
 
-export const userTypeModel = mongoose.model('UserType', userTypeSchema);
+export const userTypeModel = mongoose.model('userTypes', userTypeSchema);

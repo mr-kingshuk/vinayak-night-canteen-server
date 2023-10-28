@@ -25,9 +25,6 @@ const userSchema = new mongoose.Schema({
     hostel : {
         type: String
     },
-    roomNo : {
-        type: String
-    }
 }, { timestamps: true});
 
 userSchema.statics.signup = signup;
