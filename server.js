@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import cors from 'cors';
 
 //other imports
 // import isUser from './middlewares/isUser.js'
@@ -22,6 +23,7 @@ const MONGO_URI = process.env.MONGO_URI;
 //middlewares
 app.use(morgan('tiny'));
 app.use(express.json());
+app.use(cors());
 
 //routes
 // app.post('/merchant', isUser, async (req, res) => {
