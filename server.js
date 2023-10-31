@@ -8,12 +8,12 @@ import cors from 'cors';
 
 //other imports
 // import isUser from './middlewares/isUser.js'
-// import { userTypeModel } from "./models/Users/UserTypes.js";
+// import { userTypeModel } from "./models/Users/worker.js";
 
 //routers imports
 import userRouter from './routes/users.js';
-import userTypesRouter from './routes/userType.js';
-
+import workerRouter from './routes/worker.js';
+import userTypesRouter from './routes/userTypes.js'; 
 
 //enviroment variables and app
 const app = express();
@@ -33,7 +33,8 @@ app.use(cors());
 // })
 
 app.use('/api/users', userRouter);
-app.use('/api/workers', userTypesRouter);
+app.use('/api/workers', workerRouter);
+app.use('/api/', userTypesRouter);
 
 app.get('/', (req, res) => {
     res.json({ 'msg': "hello world!!" });

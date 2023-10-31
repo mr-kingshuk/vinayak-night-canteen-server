@@ -10,16 +10,17 @@ const createToken = (_id) => {
 };
 
 const signupUser = async(req, res) => {
-    const { email, password } = req.body;
+    const { email, password, reEnterPassword, name } = req.body;
 
-    const [error, user] = await userModel.signup(email, password);
+    const [error, user] = await userModel.signup(email, password, reEnterPassword, name);
     if(user){
         const userId = user._id;
 
         //creating a jwt token
         const token = createToken(user._id);
+        const name = user.name
 
-        res.status(200).json({email, token});
+        res.status(200).json({name, token});
     }
     else{
         res.status(400).json(error);
