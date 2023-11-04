@@ -18,9 +18,10 @@ const signupUser = async(req, res) => {
 
         //creating a jwt token
         const token = createToken(user._id);
+        const email = user.email
         const name = user.name
 
-        res.status(200).json({name, token});
+        res.status(200).json({"user":{email, token}, "userDetails":{name} });
     }
     else{
         res.status(400).json(error);

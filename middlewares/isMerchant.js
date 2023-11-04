@@ -25,11 +25,11 @@ const requireAuth = async (req, res, next) => {
         if(merchant.type === 'merchant')
             req.user = merchant.userId; 
         else    
-            res.status(401).json({error: 'Only Merchant Profile is Authorized.'})            
+          return res.status(401).json({error: 'Only Merchant Profile is Authorized.'})            
         next();
     }
     catch(error){
-        res.status(401).json({error: 'Request is not authorized'})
+        return res.status(401).json({error: 'Request is not authorized'})
     }
 
 }

@@ -24,7 +24,7 @@ const requireAuth = async (req, res, next) => {
         if(worker.type === "worker")
             req.user = worker.userId;
         else
-            res.status(401).json({error: 'Only Worker Profile is Authorized.'})    
+            return res.status(401).json({error: 'Only Worker Profile is Authorized.'})    
         next();
     }
     catch(error){
