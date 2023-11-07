@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { categoryModel } from "./Category.js";
 
 const itemSchema = new mongoose.Schema({
     name : {
@@ -11,6 +12,7 @@ const itemSchema = new mongoose.Schema({
     },
     categoryID : {
         type:  mongoose.SchemaTypes.ObjectId,
+        ref : categoryModel,
         required: true,
     },
     isAvailable : {

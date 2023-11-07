@@ -20,7 +20,7 @@ const requireAuth = async (req, res, next) => {
         const ObjectId = mongoose.Types.ObjectId;
         const id = new ObjectId(_id);
 
-        const worker = await userTypeModel.findOne({userID : id});
+        const worker = await userTypeModel.findOne({userId : id});
         if(worker.type === "worker")
             req.user = worker.userId;
         else
@@ -28,7 +28,7 @@ const requireAuth = async (req, res, next) => {
         next();
     }
     catch(error){
-        res.status(401).json({error: 'Request is not authorized'})
+        return res.status(401).json({error: 'Request is not authorized'})
     }
 
 }

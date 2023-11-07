@@ -7,13 +7,14 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 //other imports
-// import isUser from './middlewares/isUser.js'
-// import { userTypeModel } from "./models/Users/worker.js";
+import AuthHandler from './middlewares/AuthHandler.js'
+import { userTypeModel } from "./models/Users/UserTypes.js";
 
 //routers imports
 import userRouter from './routes/users.js';
 import workerRouter from './routes/worker.js';
-import userTypesRouter from './routes/userTypes.js'; 
+import userTypesRouter from './routes/userTypes.js';
+import itemsRouter from './routes/itemsCategory.js'; 
 
 //enviroment variables and app
 const app = express();
@@ -26,15 +27,16 @@ app.use(express.json());
 app.use(cors());
 
 //routes
-// app.post('/merchant', isUser, async (req, res) => {
-//     const id = req.user;
-//     const user = userTypeModel.create({userId: id, type: 'merchant'});
-//     res.status(200).json(user);
-// })
+app.post('/merchant', AuthHandler, async (req, res) => {
+    const id = req.user;
+    const user = userTypeModel.create({userId: id, type: 'merchant'});
+    res.status(200).json(user);
+})
 
+app.use('/api/', userTypesRouter);
 app.use('/api/users', userRouter);
 app.use('/api/workers', workerRouter);
-app.use('/api/', userTypesRouter);
+app.use('/api/fooditems', itemsRouter);
 
 app.get('/', (req, res) => {
     res.json({ 'msg': "hello world!!" });
