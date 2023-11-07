@@ -10,7 +10,7 @@ const itemSchema = new mongoose.Schema({
         type: Number,
         required : true
     },
-    categoryID : {
+    categoryId : {
         type:  mongoose.SchemaTypes.ObjectId,
         ref : categoryModel,
         required: true,
