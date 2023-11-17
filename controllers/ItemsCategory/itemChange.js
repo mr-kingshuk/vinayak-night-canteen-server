@@ -8,14 +8,12 @@ const itemChange = async (req, res) => {
         if(item.length === 0)
             return res.status(404).json({"err" : "Item not found"});
 
-        const available = item[0].isAvailable ? false : true;
-        console.log(item);  
+        const available = item[0].isAvailable ? false : true; 
         const itemUpdated = await itemModel.findOneAndUpdate(
             { _id },
             { $set: { isAvailable : available } },
             { new: true, projection: { isAvailable : 1 } }
         );
-        console.log(itemUpdated);
         res.status(200).json(itemUpdated);
     }
     catch(err){

@@ -5,7 +5,7 @@ const getItems = async (req, res) => {
     try{
         const category = await categoryModel.find();
         const items = await itemModel.find();
-        return res.status(200).json({ category, items })
+        return res.status(200).json({ category, items });
     }
     catch(err){
         return res.status(500).json({ err });
