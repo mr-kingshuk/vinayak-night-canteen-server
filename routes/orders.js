@@ -5,7 +5,7 @@ import addOrder from '../controllers/Orders/addOrder.js';
 import getOrder from '../controllers/Orders/getOrder.js';
 import getOrders from '../controllers/Orders/getOrders.js';
 import getReceivedOrders from '../controllers/Orders/getReceivedOrders.js';
-import deleteOrder from '../controllers/Orders/deleteOrder.js';
+import deleteOrder from '../controllers/Orders/cancelOrder.js';
 import deliverOrder from '../controllers/Orders/deliverOrder.js';
 import getDeletedOrders from '../controllers/Orders/getDeletedOrders.js';
 import getDeliveredOrders from '../controllers/Orders/getDeliveredOrders.js';
@@ -29,8 +29,8 @@ orderRouter.get('/orders', requireAuth, getOrders);
 //get all the received order in Worker Side
 orderRouter.get('/receivedOrder', isWorker, getReceivedOrders);
 
-//signify the order as deleted
-orderRouter.patch('/delete/:id', isWorker, deleteOrder);
+//signify the order as cancelled
+orderRouter.patch('/cancel/:id', isWorker, deleteOrder);
 
 //signify the order as delivered
 orderRouter.patch('/deliver/:id', isWorker, deliverOrder);
