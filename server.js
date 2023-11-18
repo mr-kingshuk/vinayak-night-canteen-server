@@ -15,6 +15,7 @@ import userRouter from './routes/users.js';
 import workerRouter from './routes/worker.js';
 import userTypesRouter from './routes/userTypes.js';
 import itemsRouter from './routes/itemsCategory.js'; 
+import orderRouter from './routes/orders.js';
 
 //enviroment variables and app
 const app = express();
@@ -37,6 +38,7 @@ app.use('/api/', userTypesRouter);
 app.use('/api/users', userRouter);
 app.use('/api/workers', workerRouter);
 app.use('/api/fooditems', itemsRouter);
+app.use('/api/orders', orderRouter);
 
 app.get('/', (req, res) => {
     res.json({ 'msg': "hello world!!" });
