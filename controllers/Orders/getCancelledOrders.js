@@ -1,16 +1,14 @@
-import mongoose from "mongoose";
 import { ordersModel } from "../../models/Orders/Orders.js";
 
-const getOrders = async (req, res) => {
-    const { _id } = new mongoose.Types.ObjectId(req.user);
+const getCancelledOrders = async (req, res) => {
     const LIMIT_PER_PAGE = 10;
     const page = parseInt(req.query.page);
     const perPage = parseInt(req.query.per_page) > LIMIT_PER_PAGE ? LIMIT_PER_PAGE : parseInt(req.query.per_page);
-    const skippedOrders = (page - 1) * perPage;
 
     try {
-        const totalOrders = await ordersModel.countDocuments({ userId : _id });
+        const totalOrders = await ordersModel.countDocuments({ status: "Cancelled" });
         const totalPages = Math.ceil(totalOrders / perPage);
+        const skippedOrders = (page - 1) * perPage;
         const itemsOnPage = page === totalPages ? (totalOrders - skippedOrders) : perPage;
 
         if (page > totalPages) {
@@ -28,7 +26,7 @@ const getOrders = async (req, res) => {
         if (totalOrders === 0)
             return res.status(400).json({ "error": "No orders found" })
 
-        const orders = await ordersModel.find({ userId : _id }).populate('userId').sort({ createdAt: -1 }).skip(skippedOrders).limit(perPage);
+        const orders = await ordersModel.find({ status: "Cancelled" }).populate('userId').sort({ createdAt: -1 }).skip(skippedOrders).limit(perPage);
         const output = {
             "data": orders,
             "metadata": {
@@ -45,4 +43,4 @@ const getOrders = async (req, res) => {
     }
 };
 
-export default getOrders;
+export default getCancelledOrders;

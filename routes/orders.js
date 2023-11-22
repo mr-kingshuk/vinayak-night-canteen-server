@@ -5,9 +5,9 @@ import addOrder from '../controllers/Orders/addOrder.js';
 import getOrder from '../controllers/Orders/getOrder.js';
 import getOrders from '../controllers/Orders/getOrders.js';
 import getReceivedOrders from '../controllers/Orders/getReceivedOrders.js';
-import deleteOrder from '../controllers/Orders/cancelOrder.js';
+import cancelOrder from '../controllers/Orders/cancelOrder.js';
 import deliverOrder from '../controllers/Orders/deliverOrder.js';
-import getDeletedOrders from '../controllers/Orders/getDeletedOrders.js';
+import getCancelledOrders from '../controllers/Orders/getCancelledOrders.js';
 import getDeliveredOrders from '../controllers/Orders/getDeliveredOrders.js';
 
 //middlewares
@@ -30,13 +30,13 @@ orderRouter.get('/orders', requireAuth, getOrders);
 orderRouter.get('/receivedOrder', isWorker, getReceivedOrders);
 
 //signify the order as cancelled
-orderRouter.patch('/cancel/:id', isWorker, deleteOrder);
+orderRouter.patch('/cancel/:id', isWorker, cancelOrder);
 
 //signify the order as delivered
 orderRouter.patch('/deliver/:id', isWorker, deliverOrder);
 
 //get all deleted orders
-orderRouter.get('/delete', isMerchant, getDeletedOrders);
+orderRouter.get('/cancel', isMerchant, getCancelledOrders);
 
 //get all delivered orders
 orderRouter.get('/deliver', isMerchant, getDeliveredOrders);
