@@ -19,7 +19,11 @@ const OrdersSchema = new mongoose.Schema({
     hostel : {
         type: String, 
         required: true
-    }
+    },
+    razorpayOrderId : {
+        type: String, 
+        // required: true
+    },
 }, { timestamps : true});
 
 export const ordersModel = mongoose.model('Orders', OrdersSchema);
