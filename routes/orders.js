@@ -9,6 +9,7 @@ import cancelOrder from '../controllers/Orders/cancelOrder.js';
 import deliverOrder from '../controllers/Orders/deliverOrder.js';
 import getCancelledOrders from '../controllers/Orders/getCancelledOrders.js';
 import getDeliveredOrders from '../controllers/Orders/getDeliveredOrders.js';
+import paymentVerify from '../controllers/Orders/paymentVerify.js';
 
 //middlewares
 import requireAuth from '../middlewares/AuthHandler.js';
@@ -40,5 +41,8 @@ orderRouter.get('/cancel', isMerchant, getCancelledOrders);
 
 //get all delivered orders
 orderRouter.get('/deliver', isMerchant, getDeliveredOrders);
+
+//verify payment
+orderRouter.post('/verification', paymentVerify);
 
 export default orderRouter;

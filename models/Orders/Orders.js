@@ -8,6 +8,17 @@ const OrdersSchema = new mongoose.Schema({
         required: true,
         ref: userModel
     },
+    razorpayOrderId : {
+        type:  String,
+        required: true,
+    },
+    razorpayPaymentId : {
+        type:  String,
+    },
+    paymentStatus : {
+        type: Boolean,
+        required: true
+    },
     status : {
         type: String,
         required: true
@@ -19,10 +30,6 @@ const OrdersSchema = new mongoose.Schema({
     hostel : {
         type: String, 
         required: true
-    },
-    razorpayOrderId : {
-        type: String, 
-        // required: true
     },
 }, { timestamps : true});
 

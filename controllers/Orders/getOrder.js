@@ -13,7 +13,7 @@ const getOrder = async (req, res) => {
 
     try{
         const order = await ordersModel.findById(orderId).populate('userId');
-        if(order){
+        if(order && order.paymentStatus){
             const items = await ordersItemModel.find({orderId : orderId});
             const body = { order : order, items : items};
             return res.status(200).json(body);

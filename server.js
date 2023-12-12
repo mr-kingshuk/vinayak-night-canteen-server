@@ -1,5 +1,5 @@
 //Dependencies
-import express from 'express';
+import express, { urlencoded } from 'express';
 import dotenv from "dotenv";
 dotenv.config();
 import cron from 'node-cron';
@@ -30,6 +30,7 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({extended : true}));
 
 //routes
 app.post('/merchant', AuthHandler, async (req, res) => {
@@ -43,6 +44,11 @@ app.use('/api/users', userRouter);
 app.use('/api/workers', workerRouter);
 app.use('/api/fooditems', itemsRouter);
 app.use('/api/orders', orderRouter);
+
+//get Razorpay API Key
+app.get('/api/key', (req, res) => {
+    res.status(200).json({"key": process.env.RAZORPAY_ID_KEY});
+})
 
 app.get('/', (req, res) => {
     res.json({ 'msg': "hello world!!" });

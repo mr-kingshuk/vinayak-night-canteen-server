@@ -9,7 +9,7 @@ const getOrders = async (req, res) => {
     const skippedOrders = (page - 1) * perPage;
 
     try {
-        const totalOrders = await ordersModel.countDocuments({ userId : _id });
+        const totalOrders = await ordersModel.countDocuments({ userId : _id, paymentStatus: true });
         const totalPages = Math.ceil(totalOrders / perPage);
         const itemsOnPage = page === totalPages ? (totalOrders - skippedOrders) : perPage;
 
@@ -28,7 +28,7 @@ const getOrders = async (req, res) => {
         if (totalOrders === 0)
             return res.status(400).json({ "error": "No orders found" })
 
-        const orders = await ordersModel.find({ userId : _id }).populate('userId').sort({ createdAt: -1 }).skip(skippedOrders).limit(perPage);
+        const orders = await ordersModel.find({ userId : _id, paymentStatus: true }).populate('userId').sort({ createdAt: -1 }).skip(skippedOrders).limit(perPage);
         const output = {
             "data": orders,
             "metadata": {
