@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import Razorpay from 'razorpay';
 
-import { counter } from "../../models/Orders/Counter.js";
+import { counter } from "../../models/Counter/Counter.js";
 import { ordersModel } from "../../models/Orders/Orders.js";
 import { ordersItemModel } from "../../models/Orders/OrdersItems.js";
 import { userModel } from "../../models/Users/Users.js";

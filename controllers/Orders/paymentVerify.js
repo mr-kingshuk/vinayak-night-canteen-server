@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { validatePaymentVerification, validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils.js';
 import { ordersModel } from "../../models/Orders/Orders.js";
+import { counter } from "../../models/Counter/Counter.js";
 
 
 const paymentVerify = async (req, res) => {
@@ -32,7 +33,8 @@ const paymentVerify = async (req, res) => {
         res.redirect(`http://localhost:5173/${orderId}`);
     }
     else {
-        res.redirect('http://localhost:5173/');
+      const orderNumber = await counter.decrement();
+      res.redirect('http://localhost:5173/');
     }
 };
 
