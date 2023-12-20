@@ -9,7 +9,6 @@ import cors from 'cors';
 //other imports
 import AuthHandler from './middlewares/AuthHandler.js'
 import { userTypeModel } from "./models/Users/UserTypes.js";
-import scheduler from './schedule.js';
 
 //routers imports
 import userRouter from './routes/users.js';
@@ -18,6 +17,7 @@ import userTypesRouter from './routes/userTypes.js';
 import itemsRouter from './routes/itemsCategory.js';
 import orderRouter from './routes/orders.js';
 import timingRouter from './routes/storeTiming.js';
+import passwordRouter from './routes/password.js';
 
 //enviroment variables and app
 const app = express();
@@ -43,6 +43,7 @@ app.use('/api/workers', workerRouter);
 app.use('/api/fooditems', itemsRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/timing', timingRouter);
+app.use('/api/password', passwordRouter);
 
 //get Razorpay API Key
 app.get('/api/key', (req, res) => {
@@ -52,8 +53,6 @@ app.get('/api/key', (req, res) => {
 app.get('/', (req, res) => {
     res.json({ 'msg': "hello world!!" });
 });
-
-// scheduler();
 
 //db connect
 mongoose.connect(MONGO_URI)
