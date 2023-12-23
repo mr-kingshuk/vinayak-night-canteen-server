@@ -6,6 +6,7 @@ import resetPassword from '../controllers/Password/resetPassword.js';
 
 const passwordRouter = express.Router();
 
+//send reset password link
 passwordRouter.post('/forget-password', forgetPassword);
 
 passwordRouter.get('/reset-password', verifyLink);
