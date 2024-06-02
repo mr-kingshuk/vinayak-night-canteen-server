@@ -6,7 +6,7 @@ import addItem from '../controllers/ItemsCategory/addItem.js';
 import itemChange from '../controllers/ItemsCategory/itemChange.js';
 import deleteCategory from '../controllers/ItemsCategory/deleteCategory.js';
 import deleteItem from '../controllers/ItemsCategory/deleteItem.js';
-
+ 
 import isMerchant from '../middlewares/isMerchant.js';
 import isWorker from '../middlewares/isWorker.js';
 import requireAuth from '../middlewares/AuthHandler.js';
