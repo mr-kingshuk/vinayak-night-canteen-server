@@ -22,7 +22,12 @@ import passwordRouter from './routes/password.js';
 //enviroment variables and app
 const app = express();
 const PORT = process.env.PORT;
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI_DEV = process.env.MONGO_URI_DEV;
+const MONGO_URI_PROD = process.env.MONGO_URI_PROD;
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+// Database connection URI based on environment
+const MONGO_URI = NODE_ENV === 'production' ? MONGO_URI_PROD : MONGO_URI_DEV;
 
 //middlewares
 app.use(morgan('tiny'));
@@ -55,7 +60,7 @@ app.get('/', (req, res) => {
 });
 
 //db connect
-mongoose.connect(MONGO_URI)
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         //listen for requests
         app.listen(PORT, () => {
