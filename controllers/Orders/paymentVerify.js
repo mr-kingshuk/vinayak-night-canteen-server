@@ -9,6 +9,7 @@ const paymentVerify = async (req, res) => {
     const { razorpay_payment_id,  razorpay_order_id, razorpay_signature } = req.body;
     const orderId = req.query.orderId;
     const SECRET_KEY = process.env.RAZORPAY_SECRET_KEY;
+    const BASE_URL_CLIENT = process.env.BASE_URL_CLIENT;
 
     const order = await ordersModel.find({ _id: orderId, status: "Accepted" });
     const razorpayOrderId = order[0].razorpayOrderId;
@@ -30,11 +31,11 @@ const paymentVerify = async (req, res) => {
             { new: true }
           );
 
-        res.redirect(`http://localhost:5173/${orderId}`);
+        res.redirect(`${BASE_URL_CLIENT}/${orderId}`);
     }
     else {
       const orderNumber = await counter.decrement();
-      res.redirect('http://localhost:5173/');
+      res.redirect('${BASE_URL_CLIENT}');
     }
 };
 

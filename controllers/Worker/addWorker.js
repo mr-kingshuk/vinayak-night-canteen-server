@@ -19,7 +19,7 @@ const addWorker = async (req, res) => {
             const userType = await (await userTypeModel.create({ userId, type: 'worker' })).populate('userId');     
             return res.status(200).json(userType);
         } else {
-            return res.status(404).json({"msg" : 'User not found'});
+            return res.status(404).json({"msg" : 'User not found, please tell worker to create account'});
         }
     } catch (err) {
         return res.status(400).json(err);

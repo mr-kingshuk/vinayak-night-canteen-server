@@ -16,7 +16,6 @@ const getOrder = async (req, res) => {
         if(order && order.paymentStatus){
             const items = await ordersItemModel.find({orderId : orderId});
             const body = { order : order, items : items};
-            console.log(body);
             return res.status(200).json(body);
         }
         else{

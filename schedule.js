@@ -1,25 +1,8 @@
 import schedule from 'node-schedule';
-// import { storeTimingModel } from './models/StoreTiming/StoreTiming.js';
 import { counter } from './models/Counter/Counter.js';
 import { itemModel } from './models/FoodItems/FoodItem.js';
 
 let scheduleStoreOpen, scheduleStoreClose;
-
-// Function to fetch schedule from database
-// async function getSchedule() {
-//     try {
-//         const storeTiming = await storeTimingModel.findOne({});
-//         return {
-//             openHour: storeTiming.openHour,
-//             openMinute: storeTiming.openMin,
-//             closeHour: storeTiming.closeHour,
-//             closeMinute: storeTiming.closeMin,
-//         };
-//     } catch (error) {
-//         console.error('Error fetching store timing:', error);
-//         return null;
-//     }
-// }
 
 const storeOpen = async () => {
     try {

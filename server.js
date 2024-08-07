@@ -36,6 +36,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
 //routes
+//create a Merchant ID, by upgrading a regular user.
 app.post('/merchant', AuthHandler, async (req, res) => {
     const id = req.user;
     const user = userTypeModel.create({ userId: id, type: 'merchant' });

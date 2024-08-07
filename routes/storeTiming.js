@@ -5,7 +5,7 @@ import scheduler from '../schedule.js';
 
 const timingRouter = express.Router();
 
-timingRouter.get('/time', isMerchant, async (req, res) => {
+timingRouter.get('/time', async (req, res) => {
     try{
       const timing = await storeTimingModel.find();
       return res.status(200).json(timing);
@@ -16,9 +16,7 @@ timingRouter.get('/time', isMerchant, async (req, res) => {
 });
 
 timingRouter.post('/', isMerchant, async (req, res) => {
-  console.log(req.body);
     const { openHour, openMin, closeHour, closeMin} = req.body.body;
-    console.log(openHour, openMin, closeHour, closeMin);
     try {
         // Validate input values here if needed
         if(openHour < 0 || openHour > 23 || closeHour < 0 || closeHour > 23 || openMin < 0 || openMin > 59 || closeMin < 0 || closeMin > 59)
@@ -26,7 +24,6 @@ timingRouter.post('/', isMerchant, async (req, res) => {
 
         // Assuming you have a single document for the store timings in the collection
         const timing = await storeTimingModel.find();
-        console.log(timing);
         const result = await storeTimingModel.findOneAndUpdate(
             { _id: timing[0]._id}, 
             {
@@ -39,7 +36,6 @@ timingRouter.post('/', isMerchant, async (req, res) => {
             },
             { new: true }
           );
-          console.log(result);
 
           const cronOpen = `${result.openMin} ${result.openHour} * * *`;
           const cronClose = `${result.closeMin} ${result.closeHour} * * *`;
