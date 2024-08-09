@@ -12,18 +12,32 @@ const addTiming = async (req, res) => {
 
         // Assuming you have a single document for the store timings in the collection
         const timing = await storeTimingModel.find();
-        const result = await storeTimingModel.findOneAndUpdate(
-            { _id: timing[0]._id },
-            {
-                $set: {
-                    openHour: openHour,
-                    openMin: openMin,
-                    closeHour: closeHour,
-                    closeMin: closeMin,
+        let result;
+        if (timing.length === 0) {
+            // No documents found, create a new one
+            result = new storeTimingModel({
+                openHour: openHour,
+                openMin: openMin,
+                closeHour: closeHour,
+                closeMin: closeMin,
+            });
+
+            await result.save();  // Save the new document to the database
+        } else {
+            // Document found, update the existing one
+            result = await storeTimingModel.findOneAndUpdate(
+                { _id: timing[0]._id },
+                {
+                    $set: {
+                        openHour: openHour,
+                        openMin: openMin,
+                        closeHour: closeHour,
+                        closeMin: closeMin,
+                    },
                 },
-            },
-            { new: true }
-        );
+                { new: true }
+            );
+        }
 
         //change the scheduler time, that schedules daily.
         const cronOpen = `${result.openMin} ${result.openHour} * * *`;
@@ -41,7 +55,7 @@ const addTiming = async (req, res) => {
 };
 
 
-const checkStoreTimeWithCurrentTime = ( openHour, openMin, closeHour, closeMin ) => {
+const checkStoreTimeWithCurrentTime = (openHour, openMin, closeHour, closeMin) => {
     // Get the current time
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
