@@ -47,6 +47,7 @@ const addTiming = async (req, res) => {
         //change items status based on new time and current time (IST)
         const available = checkStoreTimeWithCurrentTime(openHour, openMin, closeHour, closeMin);
         const itemsState = await itemModel.updateMany({}, { $set: { isAvailable: available } });
+        console.log(itemsState);
 
         res.status(200).json({ result });
     } catch (error) {

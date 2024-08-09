@@ -17,6 +17,7 @@ const verifyLink = async (req, res) => {
             // Split the token by periods (.) to get individual parts of token
             const parts = token.split('.');
             //redirects to frontend route
+            console.log(`${BASE_URL_CLIENT}/reset-password/${oldUser._id}/${parts[0]}/${parts[1]}/${parts[2]}`)
             return res.redirect(`${BASE_URL_CLIENT}/reset-password/${oldUser._id}/${parts[0]}/${parts[1]}/${parts[2]}`);
         }
         return res.status(404).json({ state: "error", message: "Invalid Link!!" });
