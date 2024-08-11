@@ -31,6 +31,7 @@ const scheduler = async (cronOpen, cronClose) => {
     if(scheduleStoreOpen){
         scheduleStoreOpen.cancel();
     }
+    //ThiS will take the server time, so when deploying it to a server, make timezone as IST(Asia/Kolkata)
 
     // Schedule store open job
     scheduleStoreOpen = schedule.scheduleJob(cronOpen, storeOpen);

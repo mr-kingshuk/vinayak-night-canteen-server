@@ -6,18 +6,18 @@ import jwt from 'jsonwebtoken';
 
 const resetPassword = async (req, res) => {
     const { id, token } = req.params;
-    const { password } = req.body;
+    const { password, passwordAgain } = req.body;
 
-    if (!password.password || !password.passwordAgain) {
+    if (!password || !passwordAgain) {
         return res.status(404).json({ error: "All feilds must be filled" });
     }
 
-    if (password.password !== password.passwordAgain) {
+    if (password !== passwordAgain) {
         return res.status(404).json({ error: "Passwords doesn't match" });
     }
 
-    if (!validator.isStrongPassword(password.password))
-        return res.status(404).json({ error: "Password is not strong enough, must contain capital, lowercase, special character and number" });
+    if (!validator.isStrongPassword(password))
+        return res.status(404).json({ error: "Password is must be atleast 8 characters, conatain atleast one capital, small, and special character and number" });
 
     try {
         //checking if user exists
@@ -26,7 +26,7 @@ const resetPassword = async (req, res) => {
         }
 
         const oldUser = await userModel.findOne({ _id: id });
-        console.log('step2');
+        
         if (!oldUser) {
             return res.status(404).json({ error: "User is not found" });
         }
@@ -38,7 +38,7 @@ const resetPassword = async (req, res) => {
 
         //hashing password
         const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(password.password, salt);
+        const hash = await bcrypt.hash(password, salt);
 
         const updatedUser = await userModel.findOneAndUpdate(
             { _id: id },

@@ -17,7 +17,6 @@ const forgetPassword = async (req, res) => {
             return res.status(404).json({ state: "error", message: "Email is not found" });
         }
         const token = createToken({ email: oldUser.email, password: oldUser.password });
-        console.log(token);
         const link = `${BASE_URL_SERVER}/api/password/reset-password/${oldUser._id}/${token}`;
 
         //send email to client

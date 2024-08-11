@@ -14,7 +14,7 @@ async function signup(email, password, reEnterPassword, name){
 
     //Strong password must conatain capital, small, and special character and number    
     if(!validator.isStrongPassword(password))
-        return [ {fields: ["password"], message:"Password is must conatain atleast one capital, small, and special character and number"} , null];
+        return [ {fields: ["password"], message:"Password is must be atleast 8 characters, conatain atleast one capital, small, and special character and number"} , null];
 
     const exists = await this.findOne({ email });
     if(exists)

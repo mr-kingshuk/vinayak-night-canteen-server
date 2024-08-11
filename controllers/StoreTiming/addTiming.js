@@ -62,6 +62,7 @@ const addTiming = async (req, res) => {
 
 const checkStoreTimeWithCurrentTime = (openHour, openMin, closeHour, closeMin) => {
     // Get the current time, server must be set to timezone IST(Asia/Kolkata)
+    //using new Date(), instead of Date.now() as former gives time in server timezone, and later gives seconds elapsed
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
     const currentMin = currentTime.getMinutes();
