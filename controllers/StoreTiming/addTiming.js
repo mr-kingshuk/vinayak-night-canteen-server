@@ -6,6 +6,11 @@ const addTiming = async (req, res) => {
     //time is coming from client in 24-hour format
     const { openHour, openMin, closeHour, closeMin } = req.body.body;
     try {
+        // Check if any of the values are null or undefined
+        if (openHour == null || openMin == null || closeHour == null || closeMin == null) {
+            return res.status(400).json({ error: 'All timing fields (openHour, openMin, closeHour, closeMin) are required' });
+        }
+
         // Validate input values here if needed
         if (openHour < 0 || openHour > 23 || closeHour < 0 || closeHour > 23 || openMin < 0 || openMin > 59 || closeMin < 0 || closeMin > 59)
             return res.status(404).json({ error: 'Timing out of bounds' });
@@ -56,7 +61,7 @@ const addTiming = async (req, res) => {
 
 
 const checkStoreTimeWithCurrentTime = (openHour, openMin, closeHour, closeMin) => {
-    // Get the current time
+    // Get the current time, server must be set to timezone IST(Asia/Kolkata)
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
     const currentMin = currentTime.getMinutes();
