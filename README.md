@@ -382,7 +382,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary><ins>8. Get All Deleted Orders</ins></summary><br>
+<summary><ins>9. Get All Deleted Orders</ins></summary><br>
    
 **Description:** Retrieves all orders that have been cancelled, including pagination support. It returns deleted orders along with metadata about the total number of items and pages.
 
@@ -602,7 +602,7 @@ POST /api/password/reset-password/:id/:token
 - **404:** User is not found if the specified user ID does not exist, or Passwords don't match if the new password and confirmation do not match, or Password must meet complexity requirements if the new password is not strong enough.
 - **500:** Server Error if there is an issue with the server.
 
-<details>
+</details>
 
 ### Store Timing API
 <details>
@@ -787,8 +787,6 @@ POST /api/workers
 - **404:** Error if the email is not provided, if the user is already a worker, or if the user is not found.
 - **400:** Bad Request if there is an issue with the request.
 </details>
-
-11. [Contributing](#contributing) 
 
 ## Contributing 
 
