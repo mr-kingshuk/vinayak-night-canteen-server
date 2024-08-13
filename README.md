@@ -601,7 +601,7 @@ POST /api/password/reset-password/:id/:token
 - **404:** User is not found if the specified user ID does not exist, or Passwords don't match if the new password and confirmation do not match, or Password must meet complexity requirements if the new password is not strong enough.
 - **500:** Server Error if there is an issue with the server.
 
-<details>
+</details>
 
 ### Store Timing API
 <details>
