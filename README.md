@@ -27,28 +27,27 @@ Client-side Repository is present at [vinayak-night-canteen-client](https://gith
 
 ## Problems Faced in College
 
-So, last year in 2023, access to food at late night was limited due to the fact that after 10:45 PM (our hostel in-time), hot food was only available via phone orders to the Vinayak Store, which often led to a few problems:
+So, last year in 2023, access to food at late night was limited due to the fact that after **10:45 PM (our hostel in-time)**, hot food was only available via phone orders to the Vinayak Store, which often led to a few problems:
 
-1. **Inefficient Communication** between the Vinayak Store and customers led to **late deliveries**, missed orders due to **unreceived calls**, and **incorrect orders** due to confusion between orders, causing significant frustration among users.
+1. <ins>**Inefficient Communication**</ins> between the Vinayak Store and customers led to <ins>**late deliveries**</ins>, missed orders due to <ins>**unreceived calls**</ins>, and <ins>**incorrect orders**</ins> due to confusion between orders, causing significant frustration among users.
 
 2. Lack of motivation among late-night workers led to delays in food preparation, and declining Quality of Service (QoS), resulting in repeated student complaints and a cycle of dissatisfaction that further demotivated workers.
 
-3. **Store Owner of Canteen** felt his store's reputation getting tarnished despite sufficient stock, and service inefficiencies led to complaints and tarnished the store's reputation within the college.
+3.  The <ins>**Store Owner of Canteen**</ins> felt that the store's reputation was being tarnished due to service inefficiencies, despite having sufficient stock, which led to complaints within the college.
 
-This was all due to **Lack of Central Monitoring**, which left students uninformed about order status and inventory levels, leading to confusion and misconceptions. The store owner’s lack of visibility into orders and stock sometimes resulted in workers lying about item availability to reduce their workload.
+This was all due to <ins>**Lack of Central Monitoring**</ins>, which left students uninformed about order status and inventory levels, leading to confusion and misconceptions. The store owner’s lack of visibility into orders and stock sometimes resulted in workers lying about item availability to reduce their workload.
 
 Addressing these issues is crucial for improving the operational environment for the **Vinayak Store** and Night Canteen as a whole.
 
 ## Solution Provided by This Software
 To address these challenges, I developed a comprehensive Night Canteen Website for Vinayak Canteen. The platform features a 3-tier user role system, including **`User`**, **`Worker`**, and **`Merchant`** profiles. Key functionalities include:
 
-- **Integrated Razorpay** for secure payments, ensuring a smooth transaction process.
-- **WebSockets** using socket.io for real-time communication, enabling Workers to receive and manage orders instantly.
-- **Cron jobs** to manage item availability based on store timings, automatically toggling items off when the store closes and on when it opens.
-- **Manual control of items** through the Worker interface, allowing for dynamic menu management.
-- **Central State Management** to efficiently handle the state of User Details and Order Details, enabling users to add items to the cart from both the Menu HomePage and the Order Summary Page.
-- **Use of localStorage** to persist User and Order Details, allowing for easy access when the User returns to the website later.
-- A robust **CMS portal** for Merchants to manage menu items and store timings, along with a **CRM portal** to track all orders, including canceled and delivered orders.
+- <ins>**Integrated Razorpay**</ins> for secure payments, ensuring a smooth transaction process.
+- <ins>**Cron jobs**</ins> to manage item availability based on store timings, automatically toggling items off when the store closes and on when it opens.
+- <ins>**Manual control of items**</ins> through the Worker interface, allowing for dynamic menu management.
+- <ins>**Central State Management**</ins> to efficiently handle the state of User Details and Order Details, enabling users to add items to the cart from both the Menu HomePage and the Order Summary Page.
+- <ins>**Use of localStorage**</ins> to persist User and Order Details, allowing for easy access when the User returns to the website later.
+- A robust <ins>**CMS portal**</ins> for Merchants to manage menu items and store timings, along with a <ins>**CRM portal**</ins> to track all orders, including cancelled and delivered orders.
 
 This project highlights advanced web development skills with a focus on real-time communication, payment integration, and efficient store management.
 
