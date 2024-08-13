@@ -187,8 +187,162 @@ The middleware in this project is responsible for handling tasks such as authent
 ## API Reference
 ### Orders API
 <details>
-<summary> 1. Get All Delivered Orders</summary><br>
+<summary> 1. Add New Order (Payment Not Confirmed)</summary><br>
    
+**Description:**  Adds a new order to the database, including order details and Razorpay payment initiation, and the `paymentStatus` is set to `false`, and `status` is set to `Accepted`. It verifies item availability, assigns an order number, calculates the total amount, and initiates a Razorpay payment order.
+
+```bash
+  POST /api/orders/
+```
+**Middleware:** `requireAuth`
+
+| Parameter    |   Type    | Description                              | Required |
+| :----------- | :-------- | :--------------------------------------- | :------- |
+| `order`       | `array`   | List of items with name, price, quantity | Yes     |
+
+**Response Summary:**
+
+- **200:** Success, returns the order document reference and the total amount to be paid.
+- **400:** One or many items have become unavailable.
+- **500:** Server error.
+
+</details>
+
+<details>
+<summary>2. Verify Razorpay Payment </summary><br>
+   
+**Description:** Verifies the payment using Razorpay's verification process. If the payment is successfully verified, the `paymentStatus` is set to `true` and the order details are updated with the Razorpay payment ID. If verification fails, the order number is decremented, and the user is redirected to the client base URL.
+
+```bash
+  POST /api/orders/verification
+```
+
+**Middleware:** None
+
+| Parameter             |   Type    | Description                              | Required |
+| :-------------------- | :-------- | :--------------------------------------- | :------- |
+| `razorpay_payment_id` | `string`  | Razorpay Payment ID                      | Yes      |
+| `razorpay_order_id`   | `string`  | Razorpay Order ID                        | Yes      |
+| `razorpay_signature ` | `string`  | Razorpay Signature for verifying the payment                  | Yes      |
+| `order`               | `array`   | Order ID used to find and update the corresponding order       | Yes      |
+
+**Response Summary:**
+
+- **302:** Redirects to the client with the order ID after successful payment verification.
+- **400:** Redirects to the client base URL if the payment verification fails.
+
+</details>
+
+<details>
+<summary>3. Cancel Order</summary><br>
+   
+**Description:** Marks an order as cancelled by updating its status to `Cancelled`. The order is identified by its ID, and only workers can perform this action.
+
+```bash
+  PATCH /api/orders/cancel/:id
+```
+**Middleware:** `isWorker`
+
+| Parameter    |   Type    | Description                              | Required |
+| :----------- | :-------- | :--------------------------------------- | :------- |
+| `id`       | `string`   | ID of the order to be cancelled | Yes     |
+
+**Response Summary:**
+
+- **200:** Success, returns the updated order with the status set to `Cancelled`.
+- **404:** No order found with the provided ID.
+- **500:** Server error.
+
+</details>
+
+<details>
+<summary>4. Mark Order as Delivered</summary><br>
+   
+**Description:** Marks an order as delivered by updating its status to `Delivered`. The order is identified by its ID, and only workers can perform this action.
+
+```bash
+  PATCH /api/orders/deliver/:id
+```
+**Middleware:** `isWorker`
+
+| Parameter    |   Type    | Description                              | Required |
+| :----------- | :-------- | :--------------------------------------- | :------- |
+| `id`       | `string`   | ID of the order to be cancelled | Yes     |
+
+**Response Summary:**
+
+- **200:** Success, returns the updated order with the status set to `Delivered`.
+- **404:** No order found with the provided ID.
+- **500:** Server error.
+
+</details>
+
+<details>
+<summary>5. Get All Received Orders (Worker Side)</summary><br>
+   
+**Description:** Retrieves all orders that have been accepted and successfully paid for. The orders are sorted in descending order based on their creation date.
+
+```bash
+  GET /api/orders/receivedOrder
+```
+
+**Middleware:** `isWorker`
+
+**Response Summary:**
+
+- **200:** Success, returns a list of all received orders with associated user details.
+- **500:** Server error.
+
+</details>
+
+<details>
+<summary>6. Get Individual Order Details</summary><br>
+   
+**Description:** Retrieves the details of an individual order identified by its ID. If the order exists and the payment status is true, it returns the order details along with the associated items. 
+
+```bash
+  GET /api/orders/order/:id
+```
+**Middleware:** `requireAuth`
+
+| Parameter |   Type    | Description                          | Required |
+| :-------- | :-------- | :----------------------------------- | :------- |
+| `id`      | `string`  | ID of the order to retrieve         | Yes      |
+
+**Response Summary:**
+
+- **200:** Success, returns the order details and associated items.
+- **400:** Not Valid OrderId if the provided ID is not a valid MongoDB ObjectId.
+- **404:** Order not found if the order does not exist or payment status is false.
+- **500:** Server error.
+</details>
+
+<details>
+<summary>7. Get All Orders of a Particular User</summary><br>
+   
+**Description:** Retrieves all orders for the authenticated user, including pagination support. It returns only paid orders i.e. orders with `paymentStatus` set to `true`, with metadata about the total number of items and pages.
+
+```bash
+  GET /api/orders/orders
+```
+**Middleware:** `requireAuth`
+
+| Parameter  |   Type    | Description                          | Required |
+| :--------- | :-------- | :----------------------------------- | :------- |
+| `page`     | `integer` | Current page number                  | No      |
+| `per_page` | `integer` | Number of orders per page            | No      |
+
+**Response Summary:**
+
+- **200:** Success, returns a list of orders with pagination metadata.
+- **400:** Invalid Page Number if the requested page exceeds total pages, or "No orders found" if the user has no orders.
+- **500:** Server error.
+
+</details>
+
+<details>
+<summary>8. Get All Delivered Orders</summary><br>
+
 **Description:**  Retrieves a paginated list of delivered orders for a specific date. Orders are sorted by **`createdAt`** in descending order, with date filtering using **`startOfDay`** and **`endOfDay`** of the **`date-fns`** library. Pagination limits results per page.
 
 ```bash
@@ -210,29 +364,31 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>1. Get All Delivered Orders</summary><br>
+<summary>8. Get All Deleted Orders</summary><br>
+   
+**Description:** Retrieves all orders that have been cancelled, including pagination support. It returns deleted orders along with metadata about the total number of items and pages.
 
 ```bash
-  GET /api/orders/deliver
+  GET /api/orders/cancel
 ```
 **Middleware:** `isMerchant`
 
-**Description:**  Retrieves a paginated list of delivered orders for a specific date. Orders are sorted by **`createdAt`** in descending order, with date filtering using **`startOfDay`** and **`endOfDay`** of the **`date-fns`** library. Pagination limits results per page.
-
-| Parameter    |   Type    | Description                       | Required |
-| :----------- | :-------- | :-------------------------------- | :------- |
-| `date`       | `string`  | Date in YYYY-MM-DD format         | Yes      |
-| `page`       | `integer` | Current page number               | No       |
-| `per_page`   | `integer` | Number of orders per page         | No       |
+| Parameter  |   Type    | Description                          | Required |
+| :--------- | :-------- | :----------------------------------- | :------- |
+| `page`     | `integer` | Current page number                  | No      |
+| `per_page` | `integer` | Number of orders per page            | No      |
 
 **Response Summary:**
 
-- **200:** Success, returns a list of delivered orders with pagination metadata.
-- **400:** Invalid page number or no orders found.
+- **200:** Success, returns a list of cancelled orders with pagination metadata.
+- **400:** Invalid Page Number if the requested page exceeds total pages, or "No orders found" if there are no cancelled orders.
 - **500:** Server error.
+
 </details>
 
 ### Items-Category API
+
+
 ### Password API
 ### Store Timing API
 ### Users API

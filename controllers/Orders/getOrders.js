@@ -4,8 +4,10 @@ import { ordersModel } from "../../models/Orders/Orders.js";
 const getOrders = async (req, res) => {
     const { _id } = new mongoose.Types.ObjectId(req.user);
     const LIMIT_PER_PAGE = 10;
-    const page = parseInt(req.query.page);
-    const perPage = parseInt(req.query.per_page) > LIMIT_PER_PAGE ? LIMIT_PER_PAGE : parseInt(req.query.per_page);
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.per_page) > LIMIT_PER_PAGE 
+    ? LIMIT_PER_PAGE 
+    : (isNaN(parseInt(req.query.per_page)) ? LIMIT_PER_PAGE : parseInt(req.query.per_page));
     const skippedOrders = (page - 1) * perPage;
 
     try {
