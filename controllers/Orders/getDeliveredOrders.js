@@ -5,8 +5,10 @@ const getDeliveredOrders = async (req, res) => {
     const { date } = req.query;
     const formattedDate = new Date(date);
     const LIMIT_PER_PAGE = 10;
-    const page = parseInt(req.query.page);
-    const perPage = parseInt(req.query.per_page) > LIMIT_PER_PAGE ? LIMIT_PER_PAGE : parseInt(req.query.per_page);
+    const page = parseInt(req.query.page) || 1;
+    const perPage = parseInt(req.query.per_page) > LIMIT_PER_PAGE 
+    ? LIMIT_PER_PAGE 
+    : (isNaN(parseInt(req.query.per_page)) ? LIMIT_PER_PAGE : parseInt(req.query.per_page));
 
     try {
 
