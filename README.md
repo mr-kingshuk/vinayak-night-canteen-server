@@ -1,7 +1,7 @@
 
 # Vinayak Canteen Website
 
-Client side Repository is present at [vinayak-night-canteen-client](https://github.com/mr-kingshuk/vinayak-night-canteen-client)
+Client-side Repository is present at [vinayak-night-canteen-client](https://github.com/mr-kingshuk/vinayak-night-canteen-client)
 
 ![Project Showcase - Website Screenshot](public/Website-preview.JPG)
 
@@ -31,9 +31,9 @@ So, last year in 2023, access to food at late night was limited due to the fact 
 
 1. **Inefficient Communication** between the Vinayak Store and customers led to **late deliveries**, missed orders due to **unreceived calls**, and **incorrect orders** due to confusion between orders, causing significant frustration among users.
 
-2. Lack of motivation among late-night workers led to delays in food preparation, declining Quality of Service (QoS), resulting in repeated student complaints and a cycle of dissatisfaction that further demotivated workers.
+2. Lack of motivation among late-night workers led to delays in food preparation, and declining Quality of Service (QoS), resulting in repeated student complaints and a cycle of dissatisfaction that further demotivated workers.
 
-3. **Store Owner of Canteen** felt his store's reputation getting tarnished despite sufficient stock, service inefficiencies led to complaints and tarnished the store's reputation within the college.
+3. **Store Owner of Canteen** felt his store's reputation getting tarnished despite sufficient stock, and service inefficiencies led to complaints and tarnished the store's reputation within the college.
 
 This was all due to **Lack of Central Monitoring**, which left students uninformed about order status and inventory levels, leading to confusion and misconceptions. The store owner’s lack of visibility into orders and stock sometimes resulted in workers lying about item availability to reduce their workload.
 
@@ -107,7 +107,7 @@ To set up the project locally, follow these steps:
      ```
      POST http://localhost:3000/merchant
      ```
-     - Include the Authorization token (JWT Token, returned as response after logging in or signing up) in the request header.
+     - Include the Authorization token (JWT Token, returned as a response after logging in or signing up) in the request header.
 
 6. **Add Categories, Items, and Store Timing**:
    - Configure categories and items, set store timings, and create worker profiles.
@@ -161,15 +161,28 @@ The following diagrams illustrate the communication between the client and serve
 
 ## Database Modeling
 
-The models define the structure of the data in the database. This project uses Mongoose to interact with a MongoDB database, via the MongoDb URI Connection String
+The models define the structure of the data in the database. This project uses Mongoose to interact with a MongoDB database, via the MongoDB URI Connection String
 
-## Middlewares
+# Middlewares
 
-The middleware in this project is responsible for handling tasks such as authentication, error handling, and request validation.
+The middleware in this project is responsible for handling tasks such as authentication and authorization for different types of users. Each middleware function ensures that only authenticated and authorized users can access specific routes.
 
-- **authMiddleware.js**: Ensures that the user is authenticated before allowing access to certain routes.
-- **errorHandler.js**: Centralized error handling, capturing and processing errors that occur during request processing.
-- **validateRequest.js**: Validates incoming requests to ensure they meet the required criteria.
+1. **AuthHandler.js**: 
+  - This middleware verifies the user is authentication by checking the authorization token sent in the request headers.
+  - The token is extracted from the `Authorization` header, typically following the `Bearer` schema.
+  - The middleware then verifies the token using a secret key. If the token is valid, the user's ID is extracted and used to retrieve the user's record from the database.
+  - If the user is authenticated, the request proceeds to the next middleware or route handler; otherwise, an error response is returned.
+
+2. **isMerchant.js**:
+  - This middleware extends the basic authentication check by verifying that the authenticated user is specifically a merchant.
+  - After verifying the token, the middleware checks the user's type in the database.
+  - If the user is identified as a merchant, the request proceeds; otherwise, an error is returned indicating that only merchant profiles are authorized to access the route.
+
+3. **isWorker.js**:
+  - Similar to the `isMerchant.js` middleware, this function verifies that the authenticated user is a worker.
+  - The token is verified, and the middleware checks the user's type in the database to confirm they are a worker.
+  - If the user is a worker, the request continues; otherwise, an error response is provided, stating that only worker profiles are authorized to access the route.
+
 
 ## API Reference
 ### Orders API
