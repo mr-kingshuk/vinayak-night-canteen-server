@@ -186,8 +186,8 @@ The middleware in this project is responsible for handling tasks such as authent
 
 ## API Reference
 ### Orders API
-<details>
-<summary> 1. Add New Order (Payment Not Confirmed)</summary><br>
+<details open>
+<summary><ins>1. Add New Order (Payment Not Confirmed)</ins></summary><br>
    
 **Description:**  Adds a new order to the database, including order details and Razorpay payment initiation, and the `paymentStatus` is set to `false`, and `status` is set to `Accepted`. It verifies item availability, assigns an order number, calculates the total amount, and initiates a Razorpay payment order.
 
@@ -209,7 +209,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>2. Verify Razorpay Payment </summary><br>
+<summary><ins>2. Verify Razorpay Payment</ins></summary><br>
    
 **Description:** Verifies the payment using Razorpay's verification process. If the payment is successfully verified, the `paymentStatus` is set to `true` and the order details are updated with the Razorpay payment ID. If verification fails, the order number is decremented, and the user is redirected to the client base URL.
 
@@ -234,7 +234,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>3. Cancel Order</summary><br>
+<summary><ins>3. Cancel Order</ins></summary><br>
    
 **Description:** Marks an order as cancelled by updating its status to `Cancelled`. The order is identified by its ID, and only workers can perform this action.
 
@@ -256,7 +256,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>4. Mark Order as Delivered</summary><br>
+<summary><ins>4. Mark Order as Delivered</ins></summary><br>
    
 **Description:** Marks an order as delivered by updating its status to `Delivered`. The order is identified by its ID, and only workers can perform this action.
 
@@ -278,7 +278,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>5. Get All Received Orders (Worker Side)</summary><br>
+<summary><ins>5. Get All Received Orders (Worker Side)</ins></summary><br>
    
 **Description:** Retrieves all orders that have been accepted and successfully paid for. The orders are sorted in descending order based on their creation date.
 
@@ -296,7 +296,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>6. Get Individual Order Details</summary><br>
+<summary><ins>6. Get Individual Order Details</ins></summary><br>
    
 **Description:** Retrieves the details of an individual order identified by its ID. If the order exists and the payment status is true, it returns the order details along with the associated items. 
 
@@ -318,7 +318,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>7. Get All Orders of a Particular User</summary><br>
+<summary><ins>7. Get All Orders of a Particular User</ins></summary><br>
    
 **Description:** Retrieves all orders for the authenticated user, including pagination support. It returns only paid orders i.e. orders with `paymentStatus` set to `true`, with metadata about the total number of items and pages.
 
@@ -341,7 +341,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>8. Get All Delivered Orders</summary><br>
+<summary><ins>8. Get All Delivered Orders</ins></summary><br>
 
 **Description:**  Retrieves a paginated list of delivered orders for a specific date. Orders are sorted by **`createdAt`** in descending order, with date filtering using **`startOfDay`** and **`endOfDay`** of the **`date-fns`** library. Pagination limits results per page.
 
@@ -364,7 +364,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary>8. Get All Deleted Orders</summary><br>
+<summary><ins>8. Get All Deleted Orders</ins></summary><br>
    
 **Description:** Retrieves all orders that have been cancelled, including pagination support. It returns deleted orders along with metadata about the total number of items and pages.
 
@@ -387,12 +387,380 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 ### Items-Category API
+<details open>
+<summary><ins>1. Get Items and Categories</ins></summary><br>
 
+**Description:** Retrieves all food items and their associated categories from the database. Accessible only to logged-in users.
+
+```bash
+  GET /api/fooditems/
+```
+**Middleware:** `requireAuth`
+
+**Response Summary:**
+
+- **200:** Success, returns a list of categories and items.
+- **500:** Server error.
+</details>
+
+<details>
+<summary><ins>2. Add Category</ins></summary><br>
+
+**Description:** Adds a new category to the database with the name provided in the request body. The category name is converted to title case before being saved.
+
+```bash
+  POST /api/fooditems/category
+```
+**Middleware:** `isMerchant`
+
+| Parameter | Type   | Description                     | Required |
+| :-------- | :----- | :------------------------------ | :------- |
+| `name`    | `string` | Name of the category to add     | Yes      |
+
+**Response Summary:**
+
+- **200:** Success, returns the newly created category.
+- **400:** Please provide a Category Name if no name is provided in the request body.
+- **500:** Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>3. Delete Category</ins></summary><br>
+
+**Description:** Deletes a category from the database along with its associated items.
+
+```bash
+  DELETE /api/fooditems/category/:id
+```
+
+**Middleware:** `isMerchant`
+
+| Parameter | Type   | Description               | Required |
+| :-------- | :----- | :------------------------ | :------- |
+| `id`      | `string` | ID of the category to delete | Yes      |
+
+**Response Summary:**
+
+- **200:** Success, returns the deleted category and associated items.
+- **404:** Category doesn't exist if the specified category ID does not match any category.
+- **500:** Server Error if there is an issue with the server.
+
+</details>
+<details>
+<summary><ins>4. Add Item</ins></summary><br>
+
+**Description:** Adds a new item to the database under the specified category.
+
+```bash
+  POST /api/fooditems/item/:categoryId
+```
+
+**Middleware:** `isMerchant`
+
+| Parameter   | Type     | Description                        | Required |
+| :---------- | :------- | :--------------------------------- | :------- |
+| `categoryId` | `string` | ID of the category to add the item to | Yes      |
+| `name`      | `string` | Name of the item to add           | Yes      |
+| `price`     | `number` | Price of the item                  | Yes      |
+
+**Response Summary:**
+
+- **200:** Success, returns the newly created item.
+- **400:** Please fill all fields if any required field is missing.
+- **404:** Category doesn't exist if the specified category ID does not match any category.
+- **500:** Server Error if there is an issue with the server.
+
+</details>
+
+<details>
+<summary><ins>5. Delete Item</ins></summary><br>
+
+**Description:** Deletes an item from the database by its ID.
+
+```bash
+  DELETE /api/fooditems/item/:id
+```
+**Middleware:** `isMerchant`
+
+| Parameter | Type     | Description                          | Required |
+| :-------- | :------- | :----------------------------------- | :------- |
+| `id`      | `string` | ID of the item to be deleted        | Yes      |
+
+**Response Summary:**
+
+- **200:** Success, returns the deleted item.
+- **404:** Item doesn't exist if the specified ID does not match any item.
+- **500:** Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>6. Item Turn Off/On</ins></summary><br>
+
+**Description:** Toggles the availability status of an existing item.
+
+```bash
+  PATCH /api/fooditems/itemsChange/:id
+```
+**Middleware:** `isWorker`
+
+| Parameter | Type     | Description                               | Required |
+| :-------- | :------- | :---------------------------------------- | :------- |
+| `id`      | `string` | ID of the item to change availability     | Yes      |
+
+**Response Summary:**
+
+- **200:** Success, returns the updated availability status of the item.
+- **404:** Item not found if the specified ID does not match any item.
+- **500:** Server Error if there is an issue with the server.
+
+</details>
 
 ### Password API
+<details open>
+<summary><ins>1. Send Reset Password Link</ins></summary><br>
+
+**Description:** Sends a reset password link to the specified email if it exists in the database.
+
+```bash
+POST /api/password/forget-password
+```
+**Parameters:** 
+
+| Parameter | Type   | Description                        | Required |
+| :-------- | :----- | :--------------------------------- | :------- |
+| `email`   | `string` | Email of the user for password reset | Yes      |
+
+**Response Summary:**
+
+- **200:** Reset Mail sent.
+- **404:** Email is not found if the specified email does not exist in the database.
+- **500:** Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>2. Verify Reset Password Link</ins></summary><br>
+
+**Description:** Verifies the reset password link and redirects the user to the reset password form.
+
+```bash
+GET /api/password/reset-password/:id/:token
+```
+
+**Parameters:**
+
+| Parameter | Type   | Description                                     | Required |
+| :-------- | :----- | :---------------------------------------------- | :------- |
+| `id`      | `string` | ID of the user requesting password reset        | Yes      |
+| `token`   | `string` | JWT token for verification                       | Yes      |
+
+**Response Summary:**
+
+- **200:** Redirects to the client reset password page.
+- **404:** User is not found if the specified user ID does not exist, or Invalid Link if the token verification fails.
+- **500:** Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>3. Reset Password</ins></summary><br>
+
+**Description:** Resets the user's password if the provided token is valid and matches the user's email.
+
+```bash
+POST /api/password/reset-password/:id/:token
+```
+**Parameters:**
+
+| Parameter      | Type   | Description                                       | Required |
+| :------------- | :----- | :------------------------------------------------ | :------- |
+| `id`           | `string` | ID of the user                                   | Yes      |
+| `token`        | `string` | JWT token for verification                        | Yes      |
+| `password`     | `string` | New password for the user                        | Yes      |
+| `passwordAgain`| `string` | Confirmation of the new password                | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns the updated user object after password reset.
+- **400:** Reset Email Link has expired if the ID is not valid, or All fields must be filled if required fields are missing.
+- **404:** User is not found if the specified user ID does not exist, or Passwords don't match if the new password and confirmation do not match, or Password must meet complexity requirements if the new password is not strong enough.
+- **500:** Server Error if there is an issue with the server.
+
+<details>
+
 ### Store Timing API
+<details open>
+<summary><ins>1. Add Store Timing</ins></summary><br>
+**Description:** Adds store timing and changes the scheduled time to manage item availability, reset order numbers, and update item statuses based on current time.
+
+```bash
+POST /api/timing
+```
+**Middleware:** `isMerchant`
+
+**Parameters:**
+
+| Parameter   | Type   | Description                                          | Required |
+|-------------|--------|------------------------------------------------------|----------|
+| openHour    | number | Opening hour of the store in 24-hour format         | Yes      |
+| openMin     | number | Opening minute of the store                          | Yes      |
+| closeHour   | number | Closing hour of the store in 24-hour format         | Yes      |
+| closeMin    | number | Closing minute of the store                          | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns the updated store timing details.
+- **400:** Error if any timing fields are missing.
+- **404:** Timing out of bounds if the provided hours or minutes are invalid.
+- **500:** Internal Server Error if there is an issue with the server.
+
+</details>
+
+<details>
+<summary><ins>2. Get Store Timing</ins></summary><br>
+**Description:** Retrieves the store timing for the user.
+
+```bash
+GET /api/timing/time
+```
+**Response Summary:**
+
+- **200:** Returns the store timing details.
+- **500:** Server Error if there is an issue with the server.
+</details>
+
 ### Users API
+
+<details open>
+<summary><ins>1. User Login</ins></summary><br>
+**Description:** Authenticates a user by email and password, returning a JWT token and user details upon successful login.
+
+```bash
+POST /api/users/login
+```
+**Parameters:**
+
+| Parameter | Type   | Description                  | Required |
+|-----------|--------|------------------------------|----------|
+| email     | string | Email of the user            | Yes      |
+| password  | string | Password of the user         | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns user object with email and token, along with user details (name, rollNo, phoneNo, hostel).
+- **400:** Error if any fields are missing, if the email doesn't exist, or if the password doesn't match.
+- **500:** Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>2. Signup User</ins></summary><br>
+**Description:** Creates a new user account  in the Database and returns a JWT token for authentication.
+
+```bash
+POST /api/users/signup
+```
+**Parameters:**
+
+| Parameter         | Type    | Description                          | Required |
+|-------------------|---------|--------------------------------------|----------|
+| email             | string  | Email of the user                    | Yes      |
+| password          | string  | Password of the user                 | Yes      |
+| reEnterPassword   | string  | Confirmation of the password         | Yes      |
+| name              | string  | Name of the user                     | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns user object with email and token, along with user details (name).
+- **400:** Error if any fields are missing or if the signup validation fails.
+- **500:** Internal Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>3. Update User Profile</ins></summary><br>
+**Description:** Updates the user profile information, including name, phone number, roll number, and hostel, for logged in users only.
+
+```bash
+PATCH /api/users/profile
+```
+**Middleware:** `AuthHandler` (ensures the user is authenticated)
+
+**Parameters:**
+
+| Parameter | Type   | Description                         | Required |
+|-----------|--------|-------------------------------------|----------|
+| name      | string | Name of the user                    | Yes      |
+| phoneNo   | string | Phone number of the user (10 digits)| Yes      |
+| rollNo    | string | Roll number of the user             | Yes      |
+| hostel    | string | Hostel of the user                  | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns the updated user profile details (name, rollNo, phoneNo, hostel).
+- **401:** Error if any fields are missing or if the phone number is invalid.
+- **400:** Bad Request if there is an issue with the update.
+
+</details>
+
 ### Workers API
+
+<details open>
+<summary><ins>1. Get Workers</ins></summary><br>
+**Description:** Retrieves all the worker details.
+
+```bash
+GET /api/workers
+```
+**Middleware:** `isMerchant` 
+
+**Response Summary:**
+
+- **200:** Returns an array of worker objects.
+- **400:** Error if no users are found.
+- **500:** Internal Server Error if there is an issue with the server.
+
+</details>
+
+<details>
+<summary><ins>2. Delete Worker</ins></summary><br>
+**Description:** Deletes the worker details based on the provided worker ID.
+
+```bash
+DELETE /api/workers/:id
+```
+**Middleware:** `isMerchant` (ensures the user is a merchant)
+
+**Parameters:**
+
+| Parameter | Type   | Description                     | Required |
+|-----------|--------|---------------------------------|----------|
+| id        | string | ID of the worker to be deleted  | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns the ID of the deleted worker.
+- **400:** Error if the document is not found.
+- **500:** Internal Server Error if there is an issue with the server.
+</details>
+
+<details>
+<summary><ins>3. Add Worker</ins></summary><br>
+**Description:** Adds a new worker to userType if the email has already signed in, and made an account on the website.
+
+```bash
+POST /api/workers
+```
+**Middleware:** `isMerchant`
+
+**Parameters:**
+
+| Parameter | Type   | Description                             | Required |
+|-----------|--------|-----------------------------------------|----------|
+| email     | string | Email address of the user to be added   | Yes      |
+
+**Response Summary:**
+
+- **200:** Returns the newly created userType object for the worker.
+- **404:** Error if the email is not provided, if the user is already a worker, or if the user is not found.
+- **400:** Bad Request if there is an issue with the request.
+</details>
 
 11. [Contributing](#contributing) 
 

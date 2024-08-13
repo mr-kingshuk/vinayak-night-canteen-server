@@ -3,32 +3,37 @@ import jwt from "jsonwebtoken";
 
 const createToken = (_id) => {
     return jwt.sign({
-        _id 
+        _id
     }, process.env.SECRET, {
         expiresIn: '3d'
     })
 };
 
-const loginUser = async(req, res) => {
+const loginUser = async (req, res) => {
     const { email, password } = req.body;
-    const [ error, user ] = await userModel.login(email, password);
+    try {
+        const [error, user] = await userModel.login(email, password);
 
-    if(user){
-        //creating a jwt token
-        const token = createToken(user._id);
-        const email = user.email;
+        if (user) {
+            //creating a jwt token
+            const token = createToken(user._id);
+            const email = user.email;
 
-        const userDetails = {
-            "name": user.name,
-            "rollNo" : user.rollNo,
-            "phoneNo" : user.phoneNo,
-            "hostel" : user.hostel 
+            const userDetails = {
+                "name": user.name,
+                "rollNo": user.rollNo,
+                "phoneNo": user.phoneNo,
+                "hostel": user.hostel
+            }
+
+            res.status(200).json({ "user": { email, token }, "userDetails": userDetails });
         }
-
-        res.status(200).json({"user" : {email , token}, "userDetails": userDetails});
+        else {
+            res.status(400).json(error);
+        }
     }
-    else{
-        res.status(400).json(error);
+    catch (err) {
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
