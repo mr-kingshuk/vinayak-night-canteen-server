@@ -77,7 +77,7 @@ To set up the project locally, follow these steps:
 1. **Fill the `.env` file**: 
    - Use the `template.env` file as a reference to configure your environment variables.
 
-2. **Set up the database connection**:
+2. **Set up the database connection in server**:
    - Add the database connection string for both production and development environments.
    - Set `NODE_ENV` to `development`. (When pushing code to production, change `NODE_ENV` to `production`.)
 
@@ -117,7 +117,25 @@ To set up the project locally, follow these steps:
 
 ## Dependencies
 
-![Dependency List](public/dependency.JPG)
+```json
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.2",
+    "morgan": "^1.10.0",
+    "node-schedule": "^2.1.1",
+    "nodemailer": "^6.9.14",
+    "razorpay": "^2.9.2",
+    "validator": "^13.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+```
 
 ## Environment Variables
 
