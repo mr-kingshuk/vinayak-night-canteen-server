@@ -232,6 +232,14 @@ The middleware in this project is responsible for handling tasks such as authent
 - **500:** Server error.
 </details>
 
+### Items-Category API
+### Password API
+### Store Timing API
+### Users API
+### Workers API
+
+11. [Contributing](#contributing) 
+
 ## Contributing
 
 Thank you for considering contributing to the Vinayak Canteen Website project! We welcome contributions from the community to improve and enhance the application. Here's how you can contribute:
