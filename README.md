@@ -779,8 +779,6 @@ POST /api/workers
 - **400:** Bad Request if there is an issue with the request.
 </details>
 
-11. [Contributing](#contributing) 
-
 ## Contributing 
 
 Thank you for considering contributing to the Vinayak Canteen Website project! We welcome contributions from the community to improve and enhance the application. Here's how you can contribute:
