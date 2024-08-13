@@ -381,7 +381,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 <details>
-<summary><ins>8. Get All Deleted Orders</ins></summary><br>
+<summary><ins>9. Get All Deleted Orders</ins></summary><br>
    
 **Description:** Retrieves all orders that have been cancelled, including pagination support. It returns deleted orders along with metadata about the total number of items and pages.
 
