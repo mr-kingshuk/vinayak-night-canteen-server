@@ -184,18 +184,18 @@ The models define the structure of the data in the database. This project uses M
 
 The middleware in this project is responsible for handling tasks such as authentication and authorization for different types of users. Each middleware function ensures that only authenticated and authorized users can access specific routes.
 
-1. **AuthHandler.js**: 
+1. <ins>**AuthHandler.js**</ins>: 
   - This middleware verifies the user is authentication by checking the authorization token sent in the request headers.
   - The token is extracted from the `Authorization` header, typically following the `Bearer` schema.
   - The middleware then verifies the token using a secret key. If the token is valid, the user's ID is extracted and used to retrieve the user's record from the database.
   - If the user is authenticated, the request proceeds to the next middleware or route handler; otherwise, an error response is returned.
 
-2. **isMerchant.js**:
+2. <ins>**isMerchant.js**</ins>:
   - This middleware extends the basic authentication check by verifying that the authenticated user is specifically a merchant.
   - After verifying the token, the middleware checks the user's type in the database.
   - If the user is identified as a merchant, the request proceeds; otherwise, an error is returned indicating that only merchant profiles are authorized to access the route.
 
-3. **isWorker.js**:
+3. <ins>**isWorker.js**</ins>:
   - Similar to the `isMerchant.js` middleware, this function verifies that the authenticated user is a worker.
   - The token is verified, and the middleware checks the user's type in the database to confirm they are a worker.
   - If the user is a worker, the request continues; otherwise, an error response is provided, stating that only worker profiles are authorized to access the route.
@@ -404,7 +404,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 ### Items-Category API
-<details open>
+<details>
 <summary><ins>1. Get Items and Categories</ins></summary><br>
 
 **Description:** Retrieves all food items and their associated categories from the database. Accessible only to logged-in users.
@@ -533,7 +533,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 ### Password API
-<details open>
+<details>
 <summary><ins>1. Send Reset Password Link</ins></summary><br>
 
 **Description:** Sends a reset password link to the specified email if it exists in the database.
@@ -604,7 +604,7 @@ POST /api/password/reset-password/:id/:token
 <details>
 
 ### Store Timing API
-<details open>
+<details>
 <summary><ins>1. Add Store Timing</ins></summary><br>
 **Description:** Adds store timing and changes the scheduled time to manage item availability, reset order numbers, and update item statuses based on current time.
 
@@ -646,7 +646,7 @@ GET /api/timing/time
 
 ### Users API
 
-<details open>
+<details>
 <summary><ins>1. User Login</ins></summary><br>
 **Description:** Authenticates a user by email and password, returning a JWT token and user details upon successful login.
 
@@ -718,7 +718,7 @@ PATCH /api/users/profile
 
 ### Workers API
 
-<details open>
+<details>
 <summary><ins>1. Get Workers</ins></summary><br>
 **Description:** Retrieves all the worker details.
 
@@ -781,7 +781,7 @@ POST /api/workers
 
 11. [Contributing](#contributing) 
 
-## Contributing
+## Contributing 
 
 Thank you for considering contributing to the Vinayak Canteen Website project! We welcome contributions from the community to improve and enhance the application. Here's how you can contribute:
 
