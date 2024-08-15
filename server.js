@@ -26,11 +26,11 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: process.env.BASE_URL_CLIENT,
+        origin: "https://www.vinayakfoods.co.in",
         methods: ["GET", "POST"],
     }
 });
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const MONGO_URI_DEV = process.env.MONGO_URI_DEV;
 const MONGO_URI_PROD = process.env.MONGO_URI_PROD;
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -41,6 +41,12 @@ const MONGO_URI = NODE_ENV === 'production' ? MONGO_URI_PROD : MONGO_URI_DEV;
 //middlewares
 app.use(morgan('tiny'));
 app.use(express.json());
+const corsOptions = {
+  origin: /https:\/\/(www\.)?vinayakfoods\.co\.in$/,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
