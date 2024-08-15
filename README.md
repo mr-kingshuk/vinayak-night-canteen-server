@@ -43,6 +43,8 @@ Addressing these issues is crucial for improving the operational environment for
 To address these challenges, I developed a comprehensive Night Canteen Website for Vinayak Canteen. The platform features a 3-tier user role system, including **`User`**, **`Worker`**, and **`Merchant`** profiles. Key functionalities include:
 
 - <ins>**Integrated Razorpay**</ins> for secure payments, ensuring a smooth transaction process, ensuring pre-payment of orders, to allow order confirmation, from both Store as well as Student side
+- 
+- <ins>**WebSockets**</ins> using socket.io for real-time communication, enabling Workers to receive and manage orders instantly.)
 - <ins>**Cron jobs**</ins> to manage item availability based on store timings, automatically toggling items off when the store closes and on when it opens, managed by the store owner.
 - <ins>**Manual control of items**</ins> through the Worker interface, allowing for dynamic menu management, which is visible to the Store Owner as well. 
 - <ins>**Central State Management**</ins> to efficiently handle the state of User Details and Order Details, enabling users to add items to the cart from both the Menu HomePage and the Order Summary Page.
@@ -130,6 +132,7 @@ To set up the project locally, follow these steps:
     "node-schedule": "^2.1.1",
     "nodemailer": "^6.9.14",
     "razorpay": "^2.9.2",
+    "socket.io": "^4.7.5",
     "validator": "^13.11.0"
   },
   "devDependencies": {
@@ -192,9 +195,9 @@ The middleware in this project is responsible for handling tasks such as authent
   - If the user is authenticated, the request proceeds to the next middleware or route handler; otherwise, an error response is returned.
 
 2. <ins>**isMerchant.js**</ins>:
-  - This middleware extends the basic authentication check by verifying that the authenticated user is specifically a merchant.
+  - This middleware extends the basic authentication check, mentioned above, in `AuthHandler.js` by verifying that the authenticated user is specifically a merchant.
   - After verifying the token, the middleware checks the user's type in the database.
-  - If the user is identified as a merchant, the request proceeds; otherwise, an error is returned indicating that only merchant profiles are authorized to access the route.
+  - If the user is identified as a merchant, the request proceeds; otherwise, an error is returned indicating that only merchant profiles are authorized to access the route, to which the middleware is attached.
 
 3. <ins>**isWorker.js**</ins>:
   - Similar to the `isMerchant.js` middleware, this function verifies that the authenticated user is a worker.
@@ -229,7 +232,7 @@ The middleware in this project is responsible for handling tasks such as authent
 <details>
 <summary><ins>2. Verify Razorpay Payment</ins></summary><br>
    
-**Description:** Verifies the payment using Razorpay's verification process. If the payment is successfully verified, the `paymentStatus` is set to `true` and the order details are updated with the Razorpay payment ID. If verification fails, the order number is decremented, and the user is redirected to the client base URL.
+**Description:** Verifies the payment using Razorpay's verification process. If the payment is successfully verified, the `paymentStatus` is set to `true` and the order details are updated with the Razorpay payment ID. The new order is then emitted to all connected clients via WebSocket. If verification fails, the order number is decremented, and the user is redirected to the client base URL.
 
 ```bash
   POST /api/orders/verification
@@ -246,7 +249,7 @@ The middleware in this project is responsible for handling tasks such as authent
 
 **Response Summary:**
 
-- **302:** Redirects to the client with the order ID after successful payment verification.
+- **302:** Redirects to the client with the order ID after successful payment verification.The new order is emitted to all connected clients.
 - **400:** Redirects to the client base URL if the payment verification fails.
 
 </details>

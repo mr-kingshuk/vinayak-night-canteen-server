@@ -5,6 +5,8 @@ dotenv.config();
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 //other imports
 import AuthHandler from './middlewares/AuthHandler.js'
@@ -21,6 +23,13 @@ import passwordRouter from './routes/password.js';
 
 //enviroment variables and app
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors: {
+        origin: process.env.BASE_URL_CLIENT,
+        methods: ["GET", "POST"],
+    }
+});
 const PORT = process.env.PORT;
 const MONGO_URI_DEV = process.env.MONGO_URI_DEV;
 const MONGO_URI_PROD = process.env.MONGO_URI_PROD;
@@ -60,14 +69,25 @@ app.get('/', (req, res) => {
     res.json({ 'msg': "hello world!!" });
 });
 
+// Socket.IO connection
+io.on('connection', (socket) => {
+    console.log('New client connected');
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
 //db connect
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         //listen for requests
-        app.listen(PORT, () => {
+        httpServer.listen(PORT, () => {
             console.log(`Connected to DB & Server is running on port http://localhost:${PORT}`);
         });
     })
     .catch((err) => {
         console.log(err);
     });
+
+export { io };    
