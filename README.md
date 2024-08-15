@@ -96,7 +96,8 @@ To set up the project locally, follow these steps:
      npm install
      npm start
      ```
-
+**Update CORS Settings:** In the server.js file located within the vinayak-night-canteen-server folder, modify the CORS configuration to allow development-side rendering of frontend routes. 
+     
 4. **Create a new account**:
    - Sign up for a new account that you want to have Merchant access.
 
@@ -408,7 +409,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 ### Items-Category API
-<details>
+<details open>
 <summary><ins>1. Get Items and Categories</ins></summary><br>
 
 **Description:** Retrieves all food items and their associated categories from the database. Accessible only to logged-in users.
@@ -537,7 +538,7 @@ The middleware in this project is responsible for handling tasks such as authent
 </details>
 
 ### Password API
-<details>
+<details open>
 <summary><ins>1. Send Reset Password Link</ins></summary><br>
 
 **Description:** Sends a reset password link to the specified email if it exists in the database.
@@ -608,7 +609,7 @@ POST /api/password/reset-password/:id/:token
 </details>
 
 ### Store Timing API
-<details>
+<details open>
 <summary><ins>1. Add Store Timing</ins></summary><br>
 
 **Description:** Adds store timing and changes the scheduled time to manage item availability, reset order numbers, and update item statuses based on current time.
@@ -652,7 +653,7 @@ GET /api/timing/time
 
 ### Users API
 
-<details>
+<details open>
 <summary><ins>1. User Login</ins></summary><br>
 
 **Description:** Authenticates a user by email and password, returning a JWT token and user details upon successful login.
@@ -727,7 +728,7 @@ PATCH /api/users/profile
 
 ### Workers API
 
-<details>
+<details open>
 <summary><ins>1. Get Workers</ins></summary><br>
 
 **Description:** Retrieves all the worker details.
