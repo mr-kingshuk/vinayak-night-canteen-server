@@ -27,7 +27,7 @@ Client-side Repository is present at [vinayak-night-canteen-client](https://gith
 
 ## Problems Faced in College
 
-So, last year in 2023, access to food at late night was limited due to the fact that after **10:45 PM (our hostel in-time)**, hot food was only available via phone orders to the Vinayak Store, which often led to a few problems:
+So, last year in 2023, access to food at late night was limited because after **10:45 PM (our hostel in time)**, hot food was only available via phone orders to the Vinayak Store, which often led to a few problems:
 
 1. <ins>**Inefficient Communication**</ins> between the Vinayak Store and customers led to <ins>**late deliveries**</ins>, missed orders due to <ins>**unreceived calls**</ins>, and <ins>**incorrect orders**</ins> due to confusion between orders, causing significant frustration among users.
 
@@ -42,7 +42,7 @@ Addressing these issues is crucial for improving the operational environment for
 ## Solution Provided by This Software
 To address these challenges, I developed a comprehensive Night Canteen Website for Vinayak Canteen. The platform features a 3-tier user role system, including **`User`**, **`Worker`**, and **`Merchant`** profiles. Key functionalities include:
 
-- <ins>**Integrated Razorpay**</ins> for secure payments, ensuring a smooth transaction process, ensuring pre-payment of orders, to allow order confirmation, from both Store as well as Student side
+- <ins>**Integrated Razorpay**</ins> for secure payments, ensuring a smooth transaction process, ensuring pre-payment of orders, to allowing order confirmation, from both Store as well as Student side
 - 
 - <ins>**WebSockets**</ins> using socket.io for real-time communication, enabling Workers to receive and manage orders instantly.)
 - <ins>**Cron jobs**</ins> to manage item availability based on store timings, automatically toggling items off when the store closes and on when it opens, managed by the store owner.
@@ -79,7 +79,7 @@ To set up the project locally, follow these steps:
 1. **Fill the `.env` file**: 
    - Use the `template.env` file as a reference to configure your environment variables.
 
-2. **Set up the database connection in server**:
+2. **Set up the database connection in the server**:
    - Add the database connection string for both production and development environments.
    - Set `NODE_ENV` to `development`. (When pushing code to production, change `NODE_ENV` to `production`.)
 
@@ -250,7 +250,7 @@ The middleware in this project is responsible for handling tasks such as authent
 
 **Response Summary:**
 
-- **302:** Redirects to the client with the order ID after successful payment verification.The new order is emitted to all connected clients.
+- **302:** Redirects to the client with the order ID after successful payment verification. The new order is emitted to all connected clients.
 - **400:** Redirects to the client base URL if the payment verification fails.
 
 </details>
@@ -357,7 +357,7 @@ The middleware in this project is responsible for handling tasks such as authent
 **Response Summary:**
 
 - **200:** Success, returns a list of orders with pagination metadata.
-- **400:** Invalid Page Number if the requested page exceeds total pages, or "No orders found" if the user has no orders.
+- **400:** Invalid Page Number if the requested page exceeds the total pages, or "No orders found" if the user has no orders.
 - **500:** Server error.
 
 </details>
@@ -428,7 +428,7 @@ The middleware in this project is responsible for handling tasks such as authent
 <details>
 <summary><ins>2. Add Category</ins></summary><br>
 
-**Description:** Adds a new category to the database with the name provided in the request body. The category name is converted to title case before being saved.
+**Description:** Adds a new category to the database with the name provided in the request body. The category name is converted to a title case before being saved.
 
 ```bash
   POST /api/fooditems/category
@@ -601,7 +601,7 @@ POST /api/password/reset-password/:id/:token
 
 **Response Summary:**
 
-- **200:** Returns the updated user object after password reset.
+- **200:** Returns the updated user object after a password reset.
 - **400:** Reset Email Link has expired if the ID is not valid, or All fields must be filled if required fields are missing.
 - **404:** User is not found if the specified user ID does not exist, or Passwords don't match if the new password and confirmation do not match, or Password must meet complexity requirements if the new password is not strong enough.
 - **500:** Server Error if there is an issue with the server.
@@ -702,7 +702,7 @@ POST /api/users/signup
 <details>
 <summary><ins>3. Update User Profile</ins></summary><br>
 
-**Description:** Updates the user profile information, including name, phone number, roll number, and hostel, for logged in users only.
+**Description:** Updates the user profile information, including name, phone number, roll number, and hostel, for logged-in users only.
 
 ```bash
 PATCH /api/users/profile
